@@ -5,7 +5,7 @@ const jwtKey =
  'add a .env file to root of project with the JWT_SECRET variable';
 
 module.exports = {
- authenticate
+ authenticate, generateToken
 };
 
 function authenticate(req, res, next) {
@@ -26,5 +26,14 @@ function authenticate(req, res, next) {
  }
 }
 
-
+function generateToken(user) {
+  const secret = jwtKey;
+  const payload = {
+    subject: user.username,
+  };
+  const options = {
+    expiresIn: '21d',
+  };
+  return jwt.sign(payload, secret, options);
+ }
 

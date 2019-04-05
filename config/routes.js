@@ -2,7 +2,7 @@ const axios = require('axios');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { authenticate } = require('../auth/authenticate');
+const { authenticate, generateToken } = require('../auth/authenticate');
 
 const Jokes = require('../jokes/jokes-model.js')
 
@@ -14,7 +14,7 @@ module.exports = server => {
 
 function register(req, res) {
  let user = req.body;
- const hash = bcrypt.hashSync(user.password, 21);
+ const hash = bcrypt.hashSync(user.password, 4);
  user.password = hash;
 
  Jokes
@@ -67,13 +67,4 @@ function getJokes(req, res) {
 
 }
 
-function generateToken(user) {
-  const secret = jwtKey;
-  const payload = {
-    subject: user.username,
-  };
-  const options = {
-    expiresIn: '21d',
-  };
-  return jwt.sign(payload, secret, options);
- }
+
